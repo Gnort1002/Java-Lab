@@ -39,7 +39,7 @@ public class View {
         System.out.println("        3. Display Task");
         System.out.println("        4. Exit");
     }        
-
+    //add task into list, print error base on exception caught
     public void add() {
         String requirementName = Utility.getString("Requirement Name: ", "", "");
         int taskTypeID = Utility.getInt("Task Type: ", "Must in range [1-4]", "Only integer!", 1, 4);
@@ -63,7 +63,7 @@ public class View {
                 System.err.println("Number Format Error! Failed to add!");
         }
     }
-    
+    //print error if catch exception
     public void delete() {
        String ID = Utility.getString("ID: ", "", "");
        try{
@@ -75,7 +75,7 @@ public class View {
             return;
        } 
     }
-
+    //display task;s infomation
     public void getDataTasks() {
         ArrayList<Task> taskList = c.getList();
         if (taskList.isEmpty()) {

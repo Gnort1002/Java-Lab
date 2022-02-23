@@ -17,8 +17,12 @@ public class Function {
     }  
         
     public static int getRandomIntegerInRange(int max){
+        int arr[] = new int[(2*max+1)];
+        for(int i = -max; i<=max; i++){
+            arr[(i+max)] = i;
+        }
         Random rand = new Random();
-        int randomNum = rand.nextInt((max - 1) + 1) + 1;
+        int randomNum = arr[rand.nextInt((2*max+1))];
         return randomNum;
     }
     

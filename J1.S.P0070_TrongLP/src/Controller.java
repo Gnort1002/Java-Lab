@@ -14,96 +14,69 @@ public class Controller {
     public Controller() {
         this.accountList = new ArrayList<Account>();
     } 
-
+    //return list of accounts
     ArrayList<Account> getList(){
         return this.accountList;
     }
-
+    //change the language
     public void setLocale(Locale locale){
         this.rb = ResourceBundle.getBundle("Language", locale);
     }
-    
+    //return resource bundle to print out wanted language
     public ResourceBundle getBundle(){
         return this.rb;
     }
-
-    boolean checkAccountNumber(String input, ResourceBundle bundle) {
+    //return error String if account number
+    //does not have 10 digits
+    public String checkAccountNumber(String input) {
         if (input.matches("[0-9]{10}")) {
-            return true;
+            return null;
         } else {
-            return false;
+            return rb.getString("AccNumErr");
         }
     }
-
-    boolean checkPassword(String input, ResourceBundle bundle) {
-        if (input.length() >= 8 && input.length() <= 31
-                && isAlphanumeric(input)) {
-            return true;
+    //Check if password is alphanumeric and has length between 8 and 31
+    //return error String if false
+    public String checkPassword(String input) {
+        if  (input.matches("(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,31})$")) {
+            return null;
         } else {
-            return false;
+            return rb.getString("PasswordErr");
         }
     }
-    
+    //generate random captcha
     public String generateCaptcha() {
         Random rand = new Random();
-        String captcha = "";
-        String characterSet = "";
+        StringBuilder captcha = new StringBuilder();
+        StringBuilder characterSet = new StringBuilder();
         //Loops to access each character from 'a' to 'z'
         for (char i = 'a'; i <= 'z'; i++) {
-            characterSet += i;
+            characterSet.append(i + "");
         }
         //Loops to access each character from 'A' to 'Z'
         for (char i = 'A'; i <= 'Z'; i++) {
-            characterSet += i;
+            characterSet.append(i + "");
         }
         //Loops to access each character from '0' to '9'
         for (char i = '0'; i <= '9'; i++) {
-            characterSet += i;
+            characterSet.append(i + "");
         }
-        //Loops until the captcha is alphanumeric
-        while (!isAlphanumeric(captcha)) {
-            captcha = "";
             //Loops until captcha length = 5
             while(captcha.length() < 5) {
-                captcha += characterSet.charAt(rand.nextInt(characterSet.length()));
+                captcha.append(characterSet.charAt(rand.nextInt(characterSet.length())));
             }
-        }
-        return captcha;
+        return captcha.toString();
     }
-    
-    boolean checkCaptcha(String input, String captchaGenerate, ResourceBundle bundle) {
-        if (captchaGenerate.contains(input)) {
-            return true;
+    //Check if input captcha contains at least one letter from generated captcha
+    public String checkCaptcha(String input, String captchaGenerate) {//String
+        if (input.length() > 0 && captchaGenerate.contains(input)) {
+            return null;
         } else {
-            return false;
+            return rb.getString("CaptchaErr");
         }
-    }    
-
-    public boolean isAlphanumeric(String input) {
-        //Check if input is empty
-        if (input.isEmpty()) {
-            return false;
-        }
-        int numOfAlphabet = 0;
-        int numOfDigit = 0;
-        for (int i = 0; i < input.length(); i++) {
-            //Check if character at index i is alphabet
-            if ((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
-                    || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z')) {
-                numOfAlphabet++;
-                continue;
-            }
-            //Check if character at index i is digit
-            if (input.charAt(i) >= '0' && input.charAt(i) <= '9') {
-                numOfDigit++;
-                continue;
-            }
-            return false;
-        }
-        return numOfAlphabet > 0 && numOfDigit > 0;
     }    
     
-    boolean readFromFile(String filename){
+    public boolean readFromFile(String filename){
         File f = new File(filename);
         if(!f.exists()) return false;
         try{

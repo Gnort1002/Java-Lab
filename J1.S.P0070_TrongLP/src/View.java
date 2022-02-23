@@ -44,7 +44,7 @@ public class View {
         System.out.println("2. English");
         System.out.println("3. Exit");
     }  
-    
+    //Option must be between [1,3], not empty and only integer
     public static int getOption(String msg) {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -66,8 +66,10 @@ public class View {
             }
         }
     }
+    //Allows the user to input the account number, password and captcha from the keyboard.
     public void login() {
             ResourceBundle bundle = c.getBundle();
+            //Input data
             String accountNumber = getData(bundle, 1);
             String password = getData(bundle, 2);
             String captcha = getData(bundle, 3);
@@ -87,11 +89,12 @@ public class View {
             }
             System.out.println(bundle.getString("AccNumNotExist"));
         }
-    
+    //Input data base on input type, 1: input acc, 2: input password, 3: input captcha
+    //print error if input String does not pass the condition
     public String getData(ResourceBundle bundle, int choice) {
         String captcha = "";
         Scanner sc = new Scanner(System.in);
-        String input;
+        String input, output = "";
         //Loops to validate the input
         while (true) {
             switch (choice) {
@@ -108,34 +111,24 @@ public class View {
                     break;
             }
             input = sc.nextLine();
-            boolean isValid = true;
             switch (choice) {
                 case 1:
-                    isValid = c.checkAccountNumber(input, bundle);
+                    output = c.checkAccountNumber(input);
+                    if (output == null) break;
+                    else System.out.println(output);
                     break;
                 case 2:
-                    isValid = c.checkPassword(input, bundle);
-                    break;
+                    output = c.checkPassword(input);
+                    if (output == null) break;
+                    else System.out.println(output);
+                    break;                    
                 case 3:
-                    isValid = c.checkCaptcha(input, captcha, bundle);
-                    break;
+                    output = c.checkCaptcha(input, captcha);
+                    if (output == null) break;
+                    else System.out.println(output);
+                    break;                     
             }
-            //Check if msg equal "true"
-            if (isValid == true) {
-                return input;
-            } else {
-                switch (choice) {
-                    case 1:
-                        System.out.println(bundle.getString("AccNumErr"));
-                        break;
-                    case 2:
-                        System.out.println(bundle.getString("PasswordErr"));
-                        break;
-                    case 3:
-                        System.out.println(bundle.getString("CaptchaErr"));
-                        break;
-                }
-            }
+            if (output == null) return input;
         }    
     }
 }

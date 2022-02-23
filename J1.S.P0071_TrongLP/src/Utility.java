@@ -29,7 +29,8 @@ public class Utility {
             }
         }
     }
-    
+    //get Double number in a range(max, min)
+    //Maybe follow reGex and print error if not match
     public static double getDouble(String msg, String errRange, double min, double max, String regEx, String errFormat) {
         while (true) {
             System.out.print(msg);
@@ -53,7 +54,7 @@ public class Utility {
             }
         }
     }
-    
+    //get date match \\d{1,2}[-]\\d{1,2}[-]\\d{4} format (dd-MM-yyyy)
     public static String getDate(String msg){
         String input;
         Date date;
