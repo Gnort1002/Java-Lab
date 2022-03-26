@@ -4,7 +4,7 @@ import java.lang.*;
 
 public class Function {
     public static Scanner sc = new Scanner(System.in);
-    
+    //Print
     public static void printReverse(String input){
         StringBuilder result = new StringBuilder();
         if (input.equals("")) return;
@@ -13,7 +13,7 @@ public class Function {
         }
         System.out.println(result.toString());
     }
-
+    //Input String
     static String getString(String msg) {
         String result;
         System.out.print(msg);
